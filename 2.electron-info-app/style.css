@@ -1,0 +1,8 @@
+html{
+    user-select: none;
+}
+textarea{
+    box-sizing: border-box;
+    width: 100%;
+    height: calc(100vh - 50px);
+}
