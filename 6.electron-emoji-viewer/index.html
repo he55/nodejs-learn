@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
   <link href="./styles.css" rel="stylesheet">
   <title>Hello World!</title>
 </head>
@@ -13,21 +14,15 @@
   <div class="container">
     <div class="left">
       <ul>
-        <li data-id="1">1</li>
-        <li data-id="2">2</li>
-        <li data-id="3">3</li>
       </ul>
     </div>
-    <div class="main1">
-      <div class="main"></div>
-    </div>
+    <div class="main"></div>
     <div class="right">
-      <img id="img" >
+      <img id="img">
       <p id="name"></p>
-      <button type="button">Copy Emoji</button>
-      <button type="button">Copy Image</button>
-      <button type="button">Copy File</button>
-      <button type="button">Open File</button>
+      <button id="btn1" type="button">Copy Emoji</button>
+      <button id="btn2" type="button">Copy Image</button>
+      <button id="btn4" type="button">Open File</button>
     </div>
   </div>
 

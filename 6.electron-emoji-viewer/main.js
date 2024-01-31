@@ -1,5 +1,5 @@
 // Modules to control application life and create native browser window
-const { app, BrowserWindow, ipcMain } = require('electron')
+const { app, BrowserWindow, ipcMain, shell, clipboard, nativeImage } = require('electron')
 const path = require('node:path')
 const fs = require('fs')
 
@@ -9,7 +9,7 @@ let data
 
 function createWindow() {
   // Create the browser window.
-   mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 915,
     height: 560,
     autoHideMenuBar: true,
@@ -31,7 +31,6 @@ function createWindow() {
 app.whenReady().then(() => {
   createWindow()
   data = loadData()
-  mainWindow.webContents.send('load-data',data)
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -50,12 +49,28 @@ app.on('window-all-closed', function () {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
+ipcMain.on('ipc', (e, name, ...arg) => {
+  if (name === 'writeText') {
+    clipboard.writeText(arg[0])
+  } else if (name === 'writeImage') {
+    const image = nativeImage.createFromPath(arg[0])
+    clipboard.writeImage(image)
+  } else if (name === 'showItemInFolder') {
+    shell.showItemInFolder(arg[0])
+  }
+})
+
+ipcMain.handle('getData',()=>{
+  return data;
+})
+
 function loadData() {
   const assetPath = 'C:\\Users\\admin\\Documents\\GitHub\\fluentui-emoji\\assets'
   const dirs = fs.readdirSync(assetPath)
   const data = []
-  for (const item of dirs) {
-    const fullPath = path.resolve(assetPath, item)
+  const groupData = {}
+  for (const dir of dirs) {
+    const fullPath = path.resolve(assetPath, dir)
     const metadata = require(path.resolve(fullPath, 'metadata.json'))
     let previewImage
 
@@ -69,12 +84,17 @@ function loadData() {
       }
     }
 
-    data.push({
+    const obj = {
       metadata,
-      id:metadata.unicode,
-      name: metadata.cldr,
+      id: metadata.unicode,
+      name: dir,
       previewImage,
-    })
+    }
+    data.push(obj)
+
+    if (!groupData[metadata.group])
+      groupData[metadata.group] = []
+    groupData[metadata.group].push(obj)
   }
-  return data
+  return groupData
 }

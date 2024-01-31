@@ -8,9 +8,13 @@
 
 const { ipcRenderer, contextBridge } = require("electron")
 
-ipcRenderer.on('load-data',(e,data)=>{
-    console.log(data)
-    contextBridge.exposeInMainWorld('api',{
-        data
-    })
+function ipc(name,...arg){
+    ipcRenderer.send('ipc',name,...arg)
+}
+
+contextBridge.exposeInMainWorld('ipc',{
+    ipc,
+    getData:()=>{
+        return ipcRenderer.invoke('getData')
+    }
 })

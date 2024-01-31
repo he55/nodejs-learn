@@ -19,19 +19,18 @@ html {
 .left {
     width: 150px;
     background-color: rgb(223, 230, 226);
-    font-size: 25px;
-}
-
-.main1 {
-    flex: 1;
-    overflow-y: auto;
+    font-size: 14px;
 }
 
 .main {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
     display: grid;
     grid-template-columns: repeat(auto-fill, 100px);
     justify-content: space-evenly;
     gap: 10px;
+    font-size: 12px;
 }
 
 .right {
