@@ -1,0 +1,8 @@
+.titlebar {
+    display: flex;
+    column-gap: 8px;
+
+    >:first-child {
+        margin-left: auto;
+    }
+}

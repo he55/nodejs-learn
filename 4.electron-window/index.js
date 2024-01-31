@@ -1,0 +1,11 @@
+window.addEventListener('DOMContentLoaded',()=>{
+    document.getElementById('min').addEventListener('click',function(){
+        api.min()
+    })
+    document.getElementById('restore').addEventListener('click',function(){
+        api.restore()
+    })
+    document.getElementById('close').addEventListener('click',function(){
+        api.close()
+    })
+})
