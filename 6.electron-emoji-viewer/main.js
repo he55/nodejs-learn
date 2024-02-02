@@ -3,13 +3,11 @@ const { app, BrowserWindow, ipcMain, shell, clipboard, nativeImage } = require('
 const path = require('node:path')
 const fs = require('fs')
 
-/** @type {BrowserWindow} */
-let mainWindow
-let data
+let data = loadData("C:\\code2\\fluentui-emoji\\assets")
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
+  const mainWindow = new BrowserWindow({
     width: 915,
     height: 560,
     autoHideMenuBar: true,
@@ -30,7 +28,6 @@ function createWindow() {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
-  data = loadData()
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -60,12 +57,11 @@ ipcMain.on('ipc', (e, name, ...arg) => {
   }
 })
 
-ipcMain.handle('getData',()=>{
+ipcMain.handle('getData', () => {
   return data;
 })
 
-function loadData() {
-  const assetPath = 'C:\\Users\\admin\\Documents\\GitHub\\fluentui-emoji\\assets'
+function loadData(assetPath) {
   const dirs = fs.readdirSync(assetPath)
   const data = []
   const groupData = {}
@@ -84,17 +80,18 @@ function loadData() {
       }
     }
 
+    const { unicode, group } = metadata
     const obj = {
       metadata,
-      id: metadata.unicode,
+      id: unicode,
       name: dir,
       previewImage,
     }
     data.push(obj)
 
-    if (!groupData[metadata.group])
-      groupData[metadata.group] = []
-    groupData[metadata.group].push(obj)
+    if (!groupData[group])
+      groupData[group] = []
+    groupData[group].push(obj)
   }
   return groupData
 }

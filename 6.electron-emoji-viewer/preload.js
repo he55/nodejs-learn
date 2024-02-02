@@ -8,13 +8,11 @@
 
 const { ipcRenderer, contextBridge } = require("electron")
 
-function ipc(name,...arg){
-    ipcRenderer.send('ipc',name,...arg)
-}
-
 contextBridge.exposeInMainWorld('ipc',{
-    ipc,
-    getData:()=>{
+    ipc(name,...arg){
+        ipcRenderer.send('ipc',name,...arg)
+    },
+    getData(){
         return ipcRenderer.invoke('getData')
     }
 })

@@ -6,60 +6,24 @@
     padding: 0;
 }
 
-html {
-    user-select: none;
+body {
     overflow: hidden;
+    user-select: none;
 }
 
 .container {
-    height: 100vh;
     display: flex;
+    height: 100vh;
 }
 
 .left {
     width: 150px;
-    background-color: rgb(223, 230, 226);
     font-size: 14px;
+    list-style: none;
+    background-color: rgb(223, 230, 226);
 }
 
-.main {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 100px);
-    justify-content: space-evenly;
-    gap: 10px;
-    font-size: 12px;
-}
-
-.right {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    row-gap: 5px;
-    width: 150px;
-    padding: 10px;
-    border-left: 1px solid black;
-    text-align: center;
-
-    img {
-        width: 128px;
-    }
-
-    p {
-        border: 1px solid gainsboro;
-        border-radius: 6px;
-        padding: 5px;
-    }
-
-    button {
-        width: 100%;
-        height: 30px;
-    }
-}
-
-.left li {
+.left>li {
     padding: 10px;
 
     &:hover {
@@ -71,13 +35,25 @@ html {
     }
 }
 
-.main .item {
+.main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100px);
+    justify-content: space-evenly;
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 12px;
+    list-style: none;
+}
+
+.main>li {
     text-align: center;
 
     >img {
+        padding: 1px;
         width: 96px;
         border: 2px solid transparent;
-        padding: 1px;
         border-radius: 5px;
     }
 
@@ -87,5 +63,34 @@ html {
 
     &.active>img {
         border-color: palevioletred;
+    }
+}
+
+.right {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 5px;
+    width: 150px;
+    text-align: center;
+    border-left: 1px solid rgb(185, 185, 185);
+
+    img {
+        width: 128px;
+        height: 128px;
+    }
+
+    p {
+        padding: 5px;
+        box-sizing: border-box;
+        width: 100%;
+        border: 1px solid gainsboro;
+        border-radius: 6px;
+    }
+
+    button {
+        width: 100%;
+        height: 30px;
     }
 }

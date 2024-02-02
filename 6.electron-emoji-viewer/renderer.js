@@ -8,60 +8,63 @@
 
 let selectedEmoji
 function loadData(emojis) {
-    /** @type {HTMLDivElement} */
-    let sdiv
-    const main = document.querySelector('.main')
-    main.innerHTML = ''
+    /** @type {HTMLLIElement} */
+    let selectli
 
+    const fragment = document.createDocumentFragment()
     for (let i = 0; i < emojis.length; i++) {
         const emoji = emojis[i]
-        const div = document.createElement('div')
-        div.dataset.id = emoji.id
-        div.className = 'item'
-        div.innerHTML = `
+        const li = document.createElement('li')
+        li.dataset.id = emoji.id
+        li.innerHTML = `
             <img src="${emoji.previewImage}" alt="">
             <p>${emoji.name}</p>
             `
-        div.onclick = /** @this HTMLDivElement */ function () {
-            sdiv?.classList.remove('active')
+        li.onclick = /** @this HTMLDivElement */ function () {
+            selectli?.classList.remove('active')
             this.classList.add('active')
-            sdiv = this
+            selectli = this
 
             const emoji = emojis.find(item => item.id === this.dataset.id)
             document.getElementById('img').src = emoji.previewImage
             document.getElementById('name').innerText = emoji.name
-            selectedEmoji=emoji
+            selectedEmoji = emoji
         }
-        main.append(div)
+        fragment.appendChild(li)
     }
+
+    const main = document.querySelector('.main')
+    main.innerHTML = ''
+    main.scrollTop=0
+    main.appendChild(fragment)
 }
 
 window.addEventListener('DOMContentLoaded', async () => {
-    document.getElementById('btn1').addEventListener('click',()=>{
-        ipc.ipc('writeText',selectedEmoji.metadata.glyph)
+    document.getElementById('btn1').addEventListener('click', () => {
+        ipc.ipc('writeText', selectedEmoji.metadata.glyph)
     })
-    document.getElementById('btn2').addEventListener('click',()=>{
-        ipc.ipc('writeImage',selectedEmoji.previewImage)
+    document.getElementById('btn2').addEventListener('click', () => {
+        ipc.ipc('writeImage', selectedEmoji.previewImage)
     })
-    document.getElementById('btn4').addEventListener('click',()=>{
-        ipc.ipc('showItemInFolder',selectedEmoji.previewImage)
+    document.getElementById('btn4').addEventListener('click', () => {
+        ipc.ipc('showItemInFolder', selectedEmoji.previewImage)
     })
 
-    const ul=document.querySelector('.left>ul')
-    const group=await ipc.getData()
+    const ul = document.querySelector('.left')
+    const group = await ipc.getData()
     for (const key in group) {
-        const li=document.createElement('li')
-        li.innerText=key
-        li.dataset.id=key
+        const li = document.createElement('li')
+        li.innerText = key
+        li.dataset.id = key
         li.onclick = /** @this HTMLLIElement */ function () {
-            document.querySelectorAll('.left>ul>li').forEach(ele => ele.classList.remove('active'))
+            document.querySelectorAll('.left>li').forEach(ele => ele.classList.remove('active'))
             this.classList.add('active')
-            const data=group[this.dataset.id]
+            const data = group[this.dataset.id]
             loadData(data)
         }
         ul.append(li)
     }
 
-    document.querySelector('.left>ul>li').click()
-    document.querySelector('.main>.item').click()
+    document.querySelector('.left>li').click()
+    document.querySelector('.main>li').click()
 })
