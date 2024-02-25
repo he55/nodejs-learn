@@ -6,65 +6,65 @@
  * to expose Node.js functionality from the main process.
  */
 
-let selectedEmoji
-function loadData(emojis) {
-    /** @type {HTMLLIElement} */
-    let selectli
-
-    const fragment = document.createDocumentFragment()
-    for (let i = 0; i < emojis.length; i++) {
-        const emoji = emojis[i]
-        const li = document.createElement('li')
-        li.dataset.id = emoji.id
-        li.innerHTML = `
-            <img src="${emoji.previewImage}" alt="">
-            <p>${emoji.name}</p>
-            `
-        li.onclick = /** @this HTMLDivElement */ function () {
-            selectli?.classList.remove('active')
-            this.classList.add('active')
-            selectli = this
-
-            const emoji = emojis.find(item => item.id === this.dataset.id)
-            document.getElementById('img').src = emoji.previewImage
-            document.getElementById('name').innerText = emoji.name
-            selectedEmoji = emoji
-        }
-        fragment.appendChild(li)
-    }
-
-    const main = document.querySelector('.main')
-    main.innerHTML = ''
-    main.scrollTop=0
-    main.appendChild(fragment)
-}
 
 window.addEventListener('DOMContentLoaded', async () => {
-    document.getElementById('btn1').addEventListener('click', () => {
-        ipc.ipc('writeText', selectedEmoji.metadata.glyph)
-    })
-    document.getElementById('btn2').addEventListener('click', () => {
-        ipc.ipc('writeImage', selectedEmoji.previewImage)
-    })
-    document.getElementById('btn4').addEventListener('click', () => {
-        ipc.ipc('showItemInFolder', selectedEmoji.previewImage)
-    })
+    const { createApp, ref, onMounted  } = Vue
+    let group = await ipc.getData()
 
-    const ul = document.querySelector('.left')
-    const group = await ipc.getData()
-    for (const key in group) {
-        const li = document.createElement('li')
-        li.innerText = key
-        li.dataset.id = key
-        li.onclick = /** @this HTMLLIElement */ function () {
-            document.querySelectorAll('.left>li').forEach(ele => ele.classList.remove('active'))
-            this.classList.add('active')
-            const data = group[this.dataset.id]
-            loadData(data)
+    createApp({
+      setup() {
+        const list=ref([])
+        const groups = ref(group)
+        const sel=ref({})
+        const main=ref(null)
+
+        function copyEmoji(){
+            ipc.ipc('writeText', sel.value.metadata.glyph)
         }
-        ul.append(li)
-    }
+        function copyImage(){
+            ipc.ipc('writeImage', sel.value.previewImage)
+        }
+        function openFile(){
+            ipc.ipc('showItemInFolder', sel.value.previewImage)
+        }
+    
+        let last
+        function click(data){
+            if(last)
+                last.isActive=false
+    
+            data.isActive=true
+            last=data
+    
+            // const main = document.querySelector('.main')
+            main.value.scrollTop=0
+            list.value=data
+        }
+    
+        function itemClick (item) {
+            if(sel.value)
+                sel.value.isActive=false
+    
+            item.isActive=true
+            sel.value = item
+        }
 
-    document.querySelector('.left>li').click()
-    document.querySelector('.main>li').click()
+        onMounted (()=>{
+            click(group['Activities'])
+            itemClick(group['Activities'][0])
+        })
+        return {
+          list,
+          itemClick,
+          groups,
+          click,
+          sel,
+          copyEmoji,
+          copyImage,
+          openFile,
+          main
+        }
+      }
+    }).mount('#app')
+
 })

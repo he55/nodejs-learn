@@ -4,22 +4,30 @@
 <head>
   <meta charset="UTF-8">
   <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-  <meta http-equiv="Content-Security-Policy"
-    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <!-- <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'"> -->
+    <script src="vue.global.js"></script>
   <link href="./styles.css" rel="stylesheet">
   <title>EmojiViewer</title>
 </head>
 
 <body>
-  <div class="container">
-    <ul class="left"></ul>
-    <ul class="main"></ul>
+  <div id="app" class="container">
+    <ul class="left">
+      <li v-for="(item, key) in groups" :class="{active: item.isActive}" @click="click(item)">{{ key }}</li>
+    </ul>
+    <ul class="main" ref="main">
+      <li v-for="emoji in list" :class="{active: emoji.isActive}" @click="itemClick(emoji)">
+        <img :src="emoji.previewImage" alt="">
+        <p>{{emoji.name}}</p>
+      </li>
+    </ul>
     <div class="right">
-      <img id="img">
-      <p id="name"></p>
-      <button id="btn1" type="button">Copy Emoji</button>
-      <button id="btn2" type="button">Copy Image</button>
-      <button id="btn4" type="button">Open File</button>
+      <img  :src="sel.previewImage">
+      <p >{{ sel.name }}</p>
+      <button @click="copyEmoji" type="button">Copy Emoji</button>
+      <button @click="copyImage" type="button">Copy Image</button>
+      <button @click="openFile" type="button">Open File</button>
     </div>
   </div>
 
