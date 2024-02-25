@@ -3,7 +3,7 @@ const { app, BrowserWindow, ipcMain, shell, clipboard, nativeImage } = require('
 const path = require('node:path')
 const fs = require('fs')
 
-let data = loadData("C:\\code2\\fluentui-emoji\\assets")
+let data = loadData("C:\\Users\\admin\\Documents\\GitHub\\fluentui-emoji\\assets")
 
 function createWindow() {
   // Create the browser window.
