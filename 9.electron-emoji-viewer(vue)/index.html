@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'">
+  <link href="./styles.css" rel="stylesheet">
+  <title>EmojiViewer</title>
+</head>
+
+<body>
+  <div class="container">
+    <ul class="left"></ul>
+    <ul class="main"></ul>
+    <div class="right">
+      <img id="img">
+      <p id="name"></p>
+      <button id="btn1" type="button">Copy Emoji</button>
+      <button id="btn2" type="button">Copy Image</button>
+      <button id="btn4" type="button">Open File</button>
+    </div>
+  </div>
+
+  <!-- You can also require other files to run in this process -->
+  <script src="./renderer.js"></script>
+</body>
+
+</html>

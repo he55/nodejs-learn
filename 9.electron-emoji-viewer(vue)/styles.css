@@ -1,0 +1,96 @@
+/* styles.css */
+
+/* Add styles here to customize the appearance of your app */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+    user-select: none;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.left {
+    width: 150px;
+    font-size: 14px;
+    list-style: none;
+    background-color: rgb(223, 230, 226);
+}
+
+.left>li {
+    padding: 10px;
+
+    &:hover {
+        background-color: aqua;
+    }
+
+    &.active {
+        background-color: red;
+    }
+}
+
+.main {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 100px);
+    justify-content: space-evenly;
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    font-size: 12px;
+    list-style: none;
+}
+
+.main>li {
+    text-align: center;
+
+    >img {
+        padding: 1px;
+        width: 96px;
+        border: 2px solid transparent;
+        border-radius: 5px;
+    }
+
+    &:hover>img {
+        border-color: blueviolet;
+    }
+
+    &.active>img {
+        border-color: palevioletred;
+    }
+}
+
+.right {
+    padding: 0 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 5px;
+    width: 150px;
+    text-align: center;
+    border-left: 1px solid rgb(185, 185, 185);
+
+    img {
+        width: 128px;
+        height: 128px;
+    }
+
+    p {
+        padding: 5px;
+        box-sizing: border-box;
+        width: 100%;
+        border: 1px solid gainsboro;
+        border-radius: 6px;
+    }
+
+    button {
+        width: 100%;
+        height: 30px;
+    }
+}
