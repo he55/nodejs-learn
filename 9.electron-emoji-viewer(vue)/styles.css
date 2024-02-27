@@ -1,6 +1,11 @@
 /* styles.css */
 
 /* Add styles here to customize the appearance of your app */
+:root {
+    --hover-color: blueviolet;
+    --selected-color: palevioletred;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -27,11 +32,11 @@ body {
     padding: 10px;
 
     &:hover {
-        background-color: aqua;
+        background-color: var(--hover-color);
     }
 
     &.active {
-        background-color: red;
+        background-color: var(--selected-color);
     }
 }
 
@@ -58,11 +63,11 @@ body {
     }
 
     &:hover>img {
-        border-color: blueviolet;
+        border-color: var(--hover-color);
     }
 
     &.active>img {
-        border-color: palevioletred;
+        border-color: var(--selected-color);
     }
 }
 
