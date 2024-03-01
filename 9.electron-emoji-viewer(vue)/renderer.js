@@ -6,65 +6,67 @@
  * to expose Node.js functionality from the main process.
  */
 
-
 window.addEventListener('DOMContentLoaded', async () => {
-    const { createApp, ref, onMounted  } = Vue
-    let group = await ipc.getData()
+    const { createApp, ref, onMounted } = Vue
+    let emojiData = await ipc.getData()
 
     createApp({
-      setup() {
-        const list=ref([])
-        const groups = ref(group)
-        const sel=ref({})
-        const main=ref(null)
+        setup() {
+            const mainElement = ref(null)
 
-        function copyEmoji(){
-            ipc.ipc('writeText', sel.value.metadata.glyph)
-        }
-        function copyImage(){
-            ipc.ipc('writeImage', sel.value.previewImage)
-        }
-        function openFile(){
-            ipc.ipc('showItemInFolder', sel.value.previewImage)
-        }
-    
-        let last
-        function click(data){
-            if(last)
-                last.isActive=false
-    
-            data.isActive=true
-            last=data
-    
-            // const main = document.querySelector('.main')
-            main.value.scrollTop=0
-            list.value=data
-        }
-    
-        function itemClick (item) {
-            if(sel.value)
-                sel.value.isActive=false
-    
-            item.isActive=true
-            sel.value = item
-        }
+            const categories = ref(emojiData)
+            const emojis = ref([])
+            const selectedEmoji = ref({})
 
-        onMounted (()=>{
-            click(group['Activities'])
-            itemClick(group['Activities'][0])
-        })
-        return {
-          list,
-          itemClick,
-          groups,
-          click,
-          sel,
-          copyEmoji,
-          copyImage,
-          openFile,
-          main
+            function copyEmoji(emoji) {
+                ipc.ipc('writeText', emoji.metadata.glyph)
+            }
+            function copyImage(emoji) {
+                ipc.ipc('writeImage', emoji.previewImage)
+            }
+            function openFile(emoji) {
+                ipc.ipc('showItemInFolder', emoji.previewImage)
+            }
+
+            let lastSelectedEmojis
+            function catetoryItemClick(items) {
+                if (lastSelectedEmojis) {
+                    lastSelectedEmojis.isActive = false
+                }
+
+                items.isActive = true
+                lastSelectedEmojis = items
+
+                // const main = document.querySelector('.main')
+                mainElement.value.scrollTop = 0
+                emojis.value = items
+            }
+
+            function emojiItemClick(emoji) {
+                if (selectedEmoji.value) {
+                    selectedEmoji.value.isActive = false
+                }
+
+                emoji.isActive = true
+                selectedEmoji.value = emoji
+            }
+
+            onMounted(() => {
+                catetoryItemClick(emojiData['Activities'])
+                emojiItemClick(emojiData['Activities'][0])
+            })
+
+            return {
+                mainElement,
+                categories,
+                emojis,
+                selectedEmoji,
+                catetoryItemClick,
+                emojiItemClick,
+                copyEmoji,
+                copyImage,
+                openFile,
+            }
         }
-      }
     }).mount('#app')
-
 })
