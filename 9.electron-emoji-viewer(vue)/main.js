@@ -64,7 +64,6 @@ ipcMain.handle('getData', () => {
 function loadData(assetPath) {
   const dirs = fs.readdirSync(assetPath)
   const data = []
-  const groupData = {}
   for (const dir of dirs) {
     const fullPath = path.resolve(assetPath, dir)
     const metadata = require(path.resolve(fullPath, 'metadata.json'))
@@ -80,18 +79,14 @@ function loadData(assetPath) {
       }
     }
 
-    const { unicode, group } = metadata
-    const obj = {
+    data.push({
       metadata,
-      id: unicode,
+      id: metadata.unicode,
       name: dir,
       previewImage,
-    }
-    data.push(obj)
-
-    if (!groupData[group])
-      groupData[group] = []
-    groupData[group].push(obj)
+    })
   }
-  return groupData
+
+  let group = Object.groupBy(data, item => item.metadata.group)
+  return group
 }
