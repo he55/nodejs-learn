@@ -7,6 +7,10 @@ app.get('/', function (req, res) {
   res.send('Hello World')
 })
 
+app.get('/getDate',(req,res)=>{
+    res.send(new Date().toString())
+})
+
 app.get('/user/:id',async (req,res)=>{
     const id = req.params.id
     console.info('id:', id)
