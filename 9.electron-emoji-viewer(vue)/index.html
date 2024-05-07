@@ -17,8 +17,8 @@
       <li v-for="(item, key) in categories" :class="{active: item.isActive}" @click="catetoryItemClick(item)">{{ key }}
       </li>
     </ul>
-    <div class="grid">
-      <ul class="main" ref="mainElement">
+    <div class="grid" ref="mainElement">
+      <ul class="main">
         <li v-for="emoji in emojis" :class="{active: emoji.isActive}" @click="emojiItemClick(emoji)">
           <img :src="emoji.previewImage" alt="">
           <p>{{emoji.name}}</p>
