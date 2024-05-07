@@ -12,16 +12,19 @@
 </head>
 
 <body>
-  <div id="app" class="container">
+  <div id="app">
     <ul class="left">
-      <li v-for="(item, key) in categories" :class="{active: item.isActive}" @click="catetoryItemClick(item)">{{ key }}</li>
-    </ul>
-    <ul class="main" ref="mainElement">
-      <li v-for="emoji in emojis" :class="{active: emoji.isActive}" @click="emojiItemClick(emoji)">
-        <img :src="emoji.previewImage" alt="">
-        <p>{{emoji.name}}</p>
+      <li v-for="(item, key) in categories" :class="{active: item.isActive}" @click="catetoryItemClick(item)">{{ key }}
       </li>
     </ul>
+    <div class="grid">
+      <ul class="main" ref="mainElement">
+        <li v-for="emoji in emojis" :class="{active: emoji.isActive}" @click="emojiItemClick(emoji)">
+          <img :src="emoji.previewImage" alt="">
+          <p>{{emoji.name}}</p>
+        </li>
+      </ul>
+    </div>
     <div class="right">
       <img :src="selectedEmoji.previewImage">
       <p>{{ selectedEmoji.name }}</p>

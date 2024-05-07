@@ -16,7 +16,7 @@ body {
     user-select: none;
 }
 
-.container {
+#app {
     display: flex;
     height: 100vh;
 }
@@ -40,14 +40,17 @@ body {
     }
 }
 
-.main {
+.grid {
     flex: 1;
+    overflow: auto;
+    padding: 5px;
+}
+
+.main {
     display: grid;
     grid-template-columns: repeat(auto-fill, 100px);
     justify-content: space-evenly;
     gap: 10px;
-    overflow-y: auto;
-    overflow-x: hidden;
     font-size: 12px;
     list-style: none;
 }
