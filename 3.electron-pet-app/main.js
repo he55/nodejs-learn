@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, Tray, Menu} = require('electron')
 const path=require('path')
 
 /** @type {BrowserWindow} */
@@ -13,6 +13,7 @@ function createWindow(){
         resizable:false,
         frame:false,
         transparent:true,
+        skipTaskbar:true,
         webPreferences:{
             preload:path.join(__dirname,'preload.js')
         }
@@ -22,6 +23,19 @@ function createWindow(){
     // mainWindow.webContents.openDevTools()
 }
 
+function createTray(){
+   const tray = new Tray('icon.png')
+    const contextMenu = Menu.buildFromTemplate([
+        {label:'Hiyori',enabled:false},
+        {label:'Quit',click:()=>{
+            app.exit()
+        }}
+    ])
+    tray.setToolTip('Hiyori')
+    tray.setContextMenu(contextMenu)
+}
+
 app.whenReady().then(()=>{
+    createTray()
     createWindow()
 })
