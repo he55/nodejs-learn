@@ -35,6 +35,8 @@ function createTray(){
     tray.setContextMenu(contextMenu)
 }
 
+app.dock.hide()
+
 app.whenReady().then(()=>{
     createTray()
     createWindow()
