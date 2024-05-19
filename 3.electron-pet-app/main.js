@@ -1,11 +1,7 @@
 const {app, BrowserWindow, Tray, Menu} = require('electron')
-const path=require('path')
-
-/** @type {BrowserWindow} */
-let mainWindow
 
 function createWindow(){
-    mainWindow = new BrowserWindow({
+   const mainWindow = new BrowserWindow({
         width:175,
         height:510,
         x:50,
@@ -14,9 +10,6 @@ function createWindow(){
         frame:false,
         transparent:true,
         skipTaskbar:true,
-        webPreferences:{
-            preload:path.join(__dirname,'preload.js')
-        }
     })
 
     mainWindow.loadFile('Hiyori/index.html')
@@ -35,6 +28,7 @@ function createTray(){
     tray.setContextMenu(contextMenu)
 }
 
+if(process.platform==='darwin')
 app.dock.hide()
 
 app.whenReady().then(()=>{
