@@ -25,3 +25,4 @@ app.get('/user/:id',async (req,res)=>{
 })
 
 app.listen(3000)
+console.log('app running.')
