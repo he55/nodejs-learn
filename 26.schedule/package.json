@@ -11,6 +11,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "log4js": "^6.9.1",
     "node-schedule": "^2.1.1"
   }
 }
