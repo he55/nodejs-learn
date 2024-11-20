@@ -1,4 +1,6 @@
-import 'zx/globals'
+//import 'zx/globals'
+
+usePowerShell()
 
 $.verbose=true
 
