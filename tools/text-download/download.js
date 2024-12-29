@@ -16,8 +16,6 @@ if (!fs.existsSync(listFile)) {
 const jsonStr = fs.readFileSync(listFile, 'utf8')
 const list = JSON.parse(jsonStr)
 
-let i = 0
-var document
 for (const item of list) {
     const { name, url } = item
     const filepath = path.resolve(output, name + '.txt')
@@ -27,22 +25,21 @@ for (const item of list) {
     console.log(`${name}  ${url}`)
     const res = await fetch(url)
     const html = await res.text()
+
+    const a = html.match(/_ii_rr\('(.+)'\)/)
+    if (!a)
+        throw new Error('key is not found')
+
+    const key = a[1]
     const dom = new JSDOM(html)
-    document = dom.window.document
-    const ele = dom.window.document.querySelector('#ad script')
-    const script = ele.text
-    eval(script)
-    let r = document.getElementById("ad").textContent.replaceAll('    ','')
-    fs.writeFileSync(filepath, r)
+    let text = _ii_rr(key, dom.window.document)
+    text = text.replaceAll('    ', '')
+    fs.writeFileSync(filepath, text)
 
     await setTimeout(1000)
-
-    // i++
-    // if (i == 3)
-    //     break
 }
 
-function _ii_rr(content) {
+function _ii_rr(content, document) {
     content = atob(content);
     var arrays = new Array();
     arrays = content.split(',');
@@ -57,4 +54,5 @@ function _ii_rr(content) {
         $html += datas[arrays[i] - el] + '<br/><br/>';
     }
     document.getElementById("ad").innerHTML = $html;
+    return document.getElementById('ad').textContent
 }
